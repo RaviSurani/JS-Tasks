@@ -1,72 +1,39 @@
-var diceval = 0;
-var totdiceval = 0;
+var guessnumber;
+var Score;
+var highScore = 0;
 
-var users = [];
-
-var userturn = 1;
-
-function loadGame(user = 2) {
-    users = []
-    setUsers(user);
-    document.getElementById('userDiv1').classList.add('turn');
+function loadgame() {
+    Score = 20;
+    guessnumber = Math.floor(Math.random() * 20);
+    document.getElementById('score').innerHTML = Score;
+    document.getElementById('highScore').innerHTML = highScore;
+    document.getElementById('guessnumber').innerHTML = '?';
+    document.getElementById('guess').value = '';
+    document.getElementById('result').value = '';
+    document.getElementById('body').classList.remove("loos");
+    document.getElementById('body').classList.remove("win");
 }
 
-function roleDice() {
-    diceval = Math.floor(Math.random() * 6) + 1;
-    totdiceval = totdiceval + diceval;
-
-    document.getElementById('diceVal').innerHTML = diceval;
-    document.getElementById('totalRole').innerHTML = totdiceval;
-    if (diceval == 1) {
-        diceval = totdiceval = 0;
-        switchUser();
-    }
-}
-
-function holdScore() {
-    users[userturn - 1]['total'] = users[userturn - 1]['total'] + totdiceval;
-    document.getElementById('user' + userturn + '_score').innerHTML = users[userturn - 1]['total'];
-    diceval = totdiceval = 0;
-    document.getElementById('diceVal').innerHTML = diceval;
-    document.getElementById('totalRole').innerHTML = totdiceval;
-    if (users[userturn - 1]['total'] >= 100) {
-        alert('Congratulations.')
-        document.getElementById('userDiv' + userturn).classList.add('win');
+function checkNumber() {
+    var guess = document.getElementById('guess').value;
+    if (guess.length < 1) {
+        alert('Enter Number You Guess.');
     } else {
-        switchUser();
+        if (guessnumber === Number(guess)) {
+            if (Score > highScore) {
+                highScore = Score;
+            }
+            document.getElementById('guessnumber').innerHTML = guessnumber;
+            document.getElementById('result').innerHTML = 'Congratulation';
+            document.getElementById('highScore').innerHTML = highScore;
+            document.getElementById('body').classList.remove("loos");
+            document.getElementById('body').classList.add("win");
+        } else {
+            Score--;
+            document.getElementById('result').innerHTML = 'Try Again';
+            document.getElementById('body').classList.remove("win");
+            document.getElementById('body').classList.add("loos");
+        }
+        document.getElementById('score').innerHTML = Score;
     }
-}
-
-
-function setUsers(user) {
-    var i = 1;
-    var html = '';
-    var col = 'col-6';
-    if (user == 3) {
-        var col = 'col-4';
-    } else if (user == 4) {
-        var col = 'col-3';
-    }
-    do {
-        html += '<div class = "' + col + '" >';
-        html += '<div id = "userDiv' + i + '" > ';
-        html += '<h4 > User ' + i + ' </h4>';
-        html += '<h5 > Holded Score </h5>';
-        html += '<span id = "user' + i + '_score" > 0 </span>';
-        html += '</div > </div>';
-        i++;
-        users.push({ total: null })
-    } while (i <= user)
-    document.getElementById('usersDiv').innerHTML = html;
-}
-
-function switchUser() {
-    document.getElementById('userDiv' + userturn).classList.remove('turn');
-
-    if (userturn >= users.length) {
-        userturn = 1;
-    } else {
-        userturn++;
-    }
-    document.getElementById('userDiv' + (userturn)).classList.add('turn');
 }
