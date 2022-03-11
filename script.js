@@ -37,6 +37,21 @@ function login() {
 
 function showDetails(userid) {
     let statment = users[userid - 1];
+    let html = ''
 
+
+    '<div class="media-content">',
+    '<div class = "content columns" >
+
+    '<
+    strong class = "column is-one-third" > < span class = "tag is-info is-small" > Deposit < /span></strong >
+        '<
+    strong class = "column is-one-third" > Date < /strong> <
+    strong class = "column is-one-third" > Amount < /strong>
+
+
+    '< /
+    div > < /
+    div > '
 
 }
