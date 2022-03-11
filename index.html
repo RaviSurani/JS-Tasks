@@ -1,0 +1,66 @@
+<html>
+
+<head>
+    <title>Banking</title>
+    <script src="script.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="body">
+        <nav class="navbar is-light">
+
+            <div class="navbar-brand">
+                <a class="navbar-item" href="#">
+                    <h3 width="112" height="28">Banking</h3>
+                </a>
+            </div>
+            <div class="navbar-menu">
+                <div class="navbar-end">
+                    <div class="navbar-item">
+                        <div class="field is-grouped">
+                            <div class="field has-addons" id="login">
+                                <div class="control">
+                                    <input class="input" id="userid" type="text" placeholder="User Id" required>
+                                </div>
+                                <div class="control">
+                                    <input class="input" id="pin" type="text" placeholder="Pin" required>
+                                </div>
+                                <div class="control">
+                                    <button class="button is-info" onclick="login()"> Login</button>
+                                </div>
+                            </div>
+                            <div class="control" id="logout">
+                                <button class="button is-info" onclick="LogOut()" style="display: none;"> LogOut</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <div class="box">
+            <article class="media">
+
+                <div class="media-content">
+                    <div class="content">
+                        <p>
+                            <strong><span class="tag is-info is-medium">Deposit</span></strong>
+                            <br>
+                            <strong>dsff</strong>
+                        </p>
+                    </div>
+
+                    </nav>
+                </div>
+            </article>
+        </div>
+    </div>
+</body>
+<script>
+    (function() {
+        showDetails(1)
+    })();
+</script>
+
+</html>
