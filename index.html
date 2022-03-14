@@ -22,19 +22,19 @@
                         <div class="field is-grouped">
                             <div class="field has-addons" id="login">
                                 <div class="control">
-                                    <input class="input is-small" id="userid" type="text" placeholder="User Id" required>
+                                    <input class="input is-medium" id="userid" type="text" placeholder="User Id" required>
                                 </div>
                                 <div class="control">
-                                    <input class="input is-small" id="pin" type="text" placeholder="Pin" required>
+                                    <input class="input is-medium" id="pin" type="text" placeholder="Pin" required>
                                 </div>
                                 <div class="control">
-                                    <button class="button is-info is-small" onclick="login()"> Login</button>
+                                    <button class="button is-info is-medium" onclick="login()"> Login</button>
                                 </div>
                             </div>
                             <div class="control is-hidden " id="logout">
                                 <strong id="loginName"></strong>
                                 <strong id="loginbalance"></strong>
-                                <button class="button is-info is-small" onclick="LogOut()"> LogOut</button>
+                                <button class="button is-info is-normal" onclick="LogOut()"> LogOut</button>
                             </div>
                         </div>
                     </div>
@@ -44,12 +44,12 @@
 
         <div class="notification is-danger is-light is-hidden" id="errorDiv">
             <button class="delete"></button>
-            <p id="errorP" class="is-small "></p>
+            <p id="errorP" class="is-medium "></p>
         </div>
 
-        <div class="notification is-primary" id="successDiv">
+        <div class="notification is-primary is-hidden" id="successDiv">
             <button class="delete"></button>
-            <p id="successP" class="is-small ">Success</p>
+            <p id="successP" class="is-medium ">Success</p>
         </div>
 
         <div class="box">
@@ -87,12 +87,12 @@
                                     <p class="subtitle">
                                         Transfer By Selecting User And Add Amount.
                                     </p>
-                                    <div class="select is-small is-info">
+                                    <div class="select is-medium is-info">
                                         <select id="transferSelsect" id="transferTo">
                                 </select>
                                     </div>
-                                    <input class="input is-info is-small" type="text" id="transferAmount" placeholder="Enter Amount">
-                                    <button class="button is-primary submit is-small" id="transferMonry" onclick="transferAmount()">Transfer</button>
+                                    <input class="input is-info is-medium" type="text" id="transferAmount" placeholder="Enter Amount">
+                                    <button class="button is-primary submit is-medium" id="transferMonry" onclick="transferAmount()">Transfer</button>
                                 </div>
                             </div>
                         </div>
@@ -108,8 +108,8 @@
                                 <div class="content">
                                     <p class="subtitle">
                                         Request Loan By Adding Amount.
-                                        <input class="input is-info is-small" type="text" id="loanAmount" placeholder="Enter Amount">
-                                        <button class="button is-primary submit is-small" onclick="requestLoan()">Request Loan</button>
+                                        <input class="input is-info is-medium" type="text" id="loanAmount" placeholder="Enter Amount">
+                                        <button class="button is-primary submit is-medium" onclick="requestLoan()">Request Loan</button>
                                 </div>
                             </div>
                         </div>
@@ -125,9 +125,9 @@
                                 <div class="content">
                                     <p class="subtitle">
                                         Enter Account Id And Pin.
-                                        <input class="input is-info is-small" type="text" id="closeAccountId" placeholder="Account Id">
-                                        <input class="input is-info is-small" type="text" id="closeAccountPin" placeholder="Account Pin">
-                                        <button class="button is-primary submit is-small" onclick="cloaseAccount()">Request TO Close</button>
+                                        <input class="input is-info is-medium" type="text" id="closeAccountId" placeholder="Account Id">
+                                        <input class="input is-info is-medium" type="text" id="closeAccountPin" placeholder="Account Pin">
+                                        <button class="button is-primary submit is-medium" onclick="cloaseAccount()">Request TO Close</button>
                                 </div>
                             </div>
                         </div>

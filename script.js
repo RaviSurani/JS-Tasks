@@ -55,6 +55,7 @@
 // userid = '';
 
 function onload() {
+
     if (sessionStorage.getItem("loginUser") == null || sessionStorage.getItem("loginUser") == '') {
         document.getElementById('userDetails').classList.add("is-hidden")
         document.getElementById('userNotLogin').classList.remove("is-hidden")
@@ -67,7 +68,6 @@ function onload() {
         showDetails();
         setDropdoen();
     }
-
 }
 
 function login() {
@@ -77,12 +77,12 @@ function login() {
         document.getElementById('userDetails').classList.add("is-hidden")
         document.getElementById('userNotLogin').classList.remove("is-hidden")
     } else {
-        document.getElementById('userNotLogin').classList.add("is-hidden")
-        document.getElementById('userDetails').classList.remove("is-hidden")
-
         users.forEach(function(user) {
             if (user.name == username && user.pin == pin) {
                 userid = user.id;
+                document.getElementById('userNotLogin').classList.add("is-hidden")
+                document.getElementById('userDetails').classList.remove("is-hidden")
+
                 sessionStorage.setItem("loginUser", user.id);
                 onload()
             } else {
@@ -114,7 +114,7 @@ function showDetails() {
             action = 'withdraw'
             cls = 'is-danger';
         }
-        divBody += '<strong class = "column is-one-third" > <span class = "tag ' + cls + ' is-light" >' + action + ' </span></strong >';
+        divBody += '<strong class = "column is-one-third" > <span class = "tag is-medium ' + cls + ' is-light" >' + action + ' </span></strong >';
         divBody += '<strong class = "column is-one-third" > ' + move.date + ' </strong> ';
         divBody += '<strong class = "column is-one-third" > ' + move.amount + ' </strong>';
         divBody += '</div>';
@@ -187,11 +187,11 @@ function transferAmount() {
     let amount = document.getElementById('transferAmount').value;
     let toid = document.getElementById('transferSelsect').value;
     let date = new Date().toLocaleDateString();
-    if (amount == '' || toid == '') {
+    user = users[userid];
+    if (amount == '' || toid == '' || user.balance < amount) {
         errorShow()
         return false;
     } else {
-        user = users[userid];
         user.balance -= amount;
         users[toid].balance += Number(amount);
         user.transfer.push({ action: 'send', date: date, amount: -Math.abs(amount), to: toid })
@@ -223,7 +223,7 @@ function cloaseAccount() {
 
 function errorShow() {
     document.getElementById('errorP').innerHTML = 'Not All Detals Properly filled';
-    document.getElementById('errorDiv').classList.add('is-hidden');
+    document.getElementById('errorDiv').classList.remove('is-hidden');
 }
 
 function sucessShow() {
@@ -231,6 +231,7 @@ function sucessShow() {
     document.getElementById('successP').innerHTML = 'Success';
     document.getElementById('successDiv').classList.toggle('is-hidden');
 }
+
 document.addEventListener('DOMContentLoaded', function() {
     let cardToggles = document.getElementsByClassName('card-toggle');
     for (let i = 0; i < cardToggles.length; i++) {
