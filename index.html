@@ -3,6 +3,7 @@
 <head>
     <title>Banking</title>
     <script src="script.js"></script>
+    <script src="data.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -21,17 +22,19 @@
                         <div class="field is-grouped">
                             <div class="field has-addons" id="login">
                                 <div class="control">
-                                    <input class="input" id="userid" type="text" placeholder="User Id" required>
+                                    <input class="input is-small" id="userid" type="text" placeholder="User Id" required>
                                 </div>
                                 <div class="control">
-                                    <input class="input" id="pin" type="text" placeholder="Pin" required>
+                                    <input class="input is-small" id="pin" type="text" placeholder="Pin" required>
                                 </div>
                                 <div class="control">
-                                    <button class="button is-info" onclick="login()"> Login</button>
+                                    <button class="button is-info is-small" onclick="login()"> Login</button>
                                 </div>
                             </div>
-                            <div class="control" id="logout">
-                                <button class="button is-info" onclick="LogOut()" style="display: none;"> LogOut</button>
+                            <div class="control is-hidden " id="logout">
+                                <strong id="loginName"></strong>
+                                <strong id="loginbalance"></strong>
+                                <button class="button is-info is-small" onclick="LogOut()"> LogOut</button>
                             </div>
                         </div>
                     </div>
@@ -39,27 +42,105 @@
             </div>
         </nav>
 
-        <div class="box columns">
-            <article class="media column is-two-thirds" id="actionsDiv">
+        <div class="notification is-danger is-light is-hidden" id="errorDiv">
+            <button class="delete"></button>
+            <p id="errorP" class="is-small "></p>
+        </div>
 
-                <div class="media-content">
-                    <div class="content columns">
+        <div class="notification is-primary" id="successDiv">
+            <button class="delete"></button>
+            <p id="successP" class="is-small ">Success</p>
+        </div>
 
-                        <strong class="column is-one-third"><span class="tag is-info is-small">Deposit</span></strong>
-                        <strong class="column is-one-third">Date</strong>
-                        <strong class="column is-one-third">Amount</strong>
+        <div class="box">
+            <div class="is-hidden has-addons" id="userNotLogin">
+                <h3 class="subtitle is-3 ">Invalid Credentials Or User Not Login </h3>
 
+            </div>
+            <div id="userDetails">
+                <div class="columns is-gapless">
+                    <div class="column box" id="accountActivity" onclick="showDetails()">
+                        Account Activity
+                    </div>
+                    <div class="column box" id="transferActivity" onclick="transferDetails()">
+                        Transfer
+                    </div>
+                    <div class="column box" id="loanActivity" onclick="loanDetails()">
+                        Loans
+                    </div>
+                </div>
+
+                <div class="columns">
+                    <article class="media column is-two-thirds" id="actionsDiv">
+                    </article>
+                    <div class="task column">
+
+                        <div class="card transferCard">
+                            <header class="card-header">
+                                <a class="card-header-icon card-toggle">
+                                    <p class="card-header-title">Transfer</p>
+                                    <i class="fa fa-angle-down"></i>
+                                </a>
+                            </header>
+                            <div class="card-content is-hidden">
+                                <div class="content">
+                                    <p class="subtitle">
+                                        Transfer By Selecting User And Add Amount.
+                                    </p>
+                                    <div class="select is-small is-info">
+                                        <select id="transferSelsect" id="transferTo">
+                                </select>
+                                    </div>
+                                    <input class="input is-info is-small" type="text" id="transferAmount" placeholder="Enter Amount">
+                                    <button class="button is-primary submit is-small" id="transferMonry" onclick="transferAmount()">Transfer</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card laonCard">
+                            <header class="card-header">
+                                <a class="card-header-icon card-toggle">
+                                    <p class="card-header-title">Request Loan </p>
+                                    <i class="fa fa-angle-down"></i>
+                                </a>
+                            </header>
+                            <div class="card-content is-hidden">
+                                <div class="content">
+                                    <p class="subtitle">
+                                        Request Loan By Adding Amount.
+                                        <input class="input is-info is-small" type="text" id="loanAmount" placeholder="Enter Amount">
+                                        <button class="button is-primary submit is-small" onclick="requestLoan()">Request Loan</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card closeAccount">
+                            <header class="card-header">
+                                <a class="card-header-icon card-toggle">
+                                    <p class="card-header-title">Close Account </p>
+                                    <i class="fa fa-angle-down"></i>
+                                </a>
+                            </header>
+                            <div class="card-content is-hidden">
+                                <div class="content">
+                                    <p class="subtitle">
+                                        Enter Account Id And Pin.
+                                        <input class="input is-info is-small" type="text" id="closeAccountId" placeholder="Account Id">
+                                        <input class="input is-info is-small" type="text" id="closeAccountPin" placeholder="Account Pin">
+                                        <button class="button is-primary submit is-small" onclick="cloaseAccount()">Request TO Close</button>
+                                </div>
+                            </div>
+                        </div>
 
                     </div>
                 </div>
-            </article>
-
+            </div>
         </div>
     </div>
 </body>
 <script>
     (function() {
-        showDetails(1)
+        onload()
     })();
 </script>
 
