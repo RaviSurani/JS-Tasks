@@ -25,7 +25,6 @@ function login() {
                 userid = user.id;
                 document.getElementById('userNotLogin').classList.add("is-hidden")
                 document.getElementById('userDetails').classList.remove("is-hidden")
-
                 sessionStorage.setItem("loginUser", user.id);
                 onload()
             } else {
@@ -97,7 +96,6 @@ function transferDetails(sort = '') {
     divBody += '<strong class="column is-one-forth">To</strong>';
     divBody += '</div>';
     divBody += '</div>';
-
     statment.transfer.forEach(function(move) {
         divBody += '<div class="media-content">';
         divBody += '<div class = "content columns" >';
