@@ -1,5 +1,4 @@
 function onload() {
-
     if (sessionStorage.getItem("loginUser") == null || sessionStorage.getItem("loginUser") == '') {
         document.getElementById('userDetails').classList.add("is-hidden")
         document.getElementById('userNotLogin').classList.remove("is-hidden")
@@ -92,7 +91,6 @@ function transferDetails(sort = '') {
     let cls = '';
     divBody += '<div class="media-content">';
     divBody += '<div class="content columns">';
-
     divBody += `<strong class="column is-one-forth"  onclick="transferDetails('Activity')"> Activity</strong>`;
     divBody += `<strong class="column is-one-forth" onclick="transferDetails('Date')">Date</strong>`;
     divBody += `<strong class="column is-one-forth" onclick="transferDetails('Date')">Amount</strong>`;
@@ -206,7 +204,6 @@ document.addEventListener('DOMContentLoaded', function() {
 document.addEventListener('DOMContentLoaded', () => {
     (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
         const $notification = $delete.parentNode;
-
         $delete.addEventListener('click', () => {
             $notification.parentNode.removeChild($notification);
         });
