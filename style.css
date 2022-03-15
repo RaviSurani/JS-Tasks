@@ -10,7 +10,7 @@ box-shadow: inset 0 0 30px #6399eb */
 .media-content {
     background: rgb(215 231 245 / 52%);
     border-radius: 16px;
-    padding: 10px 10px;
+    /* padding: 10px 10px; */
     margin: 5px;
 }
 

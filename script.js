@@ -1,59 +1,3 @@
-// let users = [{
-//     id: 0,
-//     name: 'zz',
-//     pin: '123',
-//     balance: 5000,
-//     movement: [{ date: '01/01/2020', amount: 200 }, { date: '01/01/2020', amount: -100 },
-//         { date: '01/01/2020', amount: 500 }, { date: '01/01/2020', amount: 200 },
-//         { date: '01/01/2020', amount: -100 }, { date: '01/01/2020', amount: -200 },
-//     ],
-//     loan: [
-//         { action: 'loan', date: '01/01/2020', loanAmount: 1000, payed: '200', pending: '800' },
-//     ],
-//     transfer: [
-//         { action: 'send', date: '01/01/2020', amount: -100, to: '2' },
-//         { action: 'receive', date: '01/01/2020', amount: 200, to: '2' },
-//         { action: 'send', date: '01/01/2020', amount: -100, to: '2' },
-//     ],
-
-// }, {
-//     id: 1,
-//     name: 'aa',
-//     pin: '123',
-//     balance: 5000,
-//     movement: [{ date: '01/01/2020', amount: 200 }, { date: '01/01/2020', amount: -100 },
-//         { date: '01/01/2020', amount: 500 }, { date: '01/01/2020', amount: 200 },
-//         { date: '01/01/2020', amount: -100 }, { date: '01/01/2020', amount: -200 },
-//     ],
-//     loan: [
-//         { action: 'loan', date: '01/01/2020', loanAmount: 1000, payed: '200', pending: '800' },
-//     ],
-//     transfer: [
-//         { action: 'send', date: '01/01/2020', amount: -100, to: '2' },
-//         { action: 'receive', date: '01/01/2020', amount: 200, to: '2' },
-//         { action: 'send', date: '01/01/2020', amount: -100, to: '2' },
-//     ],
-
-// }, {
-//     id: 2,
-//     name: 'bb',
-//     pin: '456',
-//     balance: 50000,
-//     movement: [{ date: '01/01/2020', amount: 500 }, { date: '01/01/2020', amount: -400 },
-//         { date: '01/01/2020', amount: 600 }, { date: '01/01/2020', amount: 200 },
-//         { date: '01/01/2020', amount: -200 }, { date: '01/01/2020', amount: -100 },
-//     ],
-//     loan: [
-//         { action: 'loan', date: '01/01/2020', loanAmount: 5000, payed: '2000', pending: '3000' },
-//     ],
-//     transfer: [
-//         { action: 'receive', date: '01/01/2020', amount: 100, to: '1' },
-//         { action: 'send', date: '01/01/2020', amount: -200, to: '1' },
-//         { action: 'receive', date: '01/01/2020', amount: 100, to: '1' },
-//     ],
-// }];
-// userid = '';
-
 function onload() {
 
     if (sessionStorage.getItem("loginUser") == null || sessionStorage.getItem("loginUser") == '') {
@@ -63,8 +7,8 @@ function onload() {
         userid = sessionStorage.getItem("loginUser")
         document.getElementById('login').classList.add('is-hidden')
         document.getElementById('logout').classList.remove('is-hidden')
-        document.getElementById('loginName').innerHTML = users[userid].name
-        document.getElementById('loginbalance').innerHTML = users[userid].balance
+        document.getElementById('loginName').innerText = users[userid].name
+        document.getElementById('loginbalance').innerText = users[userid].balance
         showDetails();
         setDropdoen();
     }
@@ -104,17 +48,24 @@ function showDetails() {
     let divBody = '';
     let action = '';
     let cls = '';
+    divBody += '<div class="media-content">';
+    divBody += '<div class="content columns">';
+    divBody += '<strong class="column is-one-third"> Activity</strong>';
+    divBody += '<strong class="column is-one-third">Date</strong>';
+    divBody += '<strong class="column is-one-third">Amount</strong>';
+    divBody += '</div>';
+    divBody += '</div>';
     statment.movement.forEach(function(move) {
         divBody += '<div class="media-content">';
         divBody += '<div class = "content columns" >';
-        if (move.amount < 0) {
+        if (move.amount > 0) {
             action = 'deposit'
             cls = 'is-primary';
         } else {
             action = 'withdraw'
             cls = 'is-danger';
         }
-        divBody += '<strong class = "column is-one-third" > <span class = "tag is-medium ' + cls + ' is-light" >' + action + ' </span></strong >';
+        divBody += '<strong class = "column is-one-third" > <span class = "tag is-small ' + cls + ' is-light" >' + action + ' </span></strong >';
         divBody += '<strong class = "column is-one-third" > ' + move.date + ' </strong> ';
         divBody += '<strong class = "column is-one-third" > ' + move.amount + ' </strong>';
         divBody += '</div>';
@@ -134,11 +85,21 @@ function setDropdoen() {
     document.getElementById('transferSelsect').innerHTML = selectBody;
 }
 
-function transferDetails() {
+function transferDetails(sort = '') {
     let statment = users[userid];
     let divBody = '';
     let action = '';
     let cls = '';
+    divBody += '<div class="media-content">';
+    divBody += '<div class="content columns">';
+
+    divBody += `<strong class="column is-one-forth"  onclick="transferDetails('Activity')"> Activity</strong>`;
+    divBody += `<strong class="column is-one-forth" onclick="transferDetails('Date')">Date</strong>`;
+    divBody += `<strong class="column is-one-forth" onclick="transferDetails('Date')">Amount</strong>`;
+    divBody += '<strong class="column is-one-forth">To</strong>';
+    divBody += '</div>';
+    divBody += '</div>';
+
     statment.transfer.forEach(function(move) {
         divBody += '<div class="media-content">';
         divBody += '<div class = "content columns" >';
@@ -149,9 +110,10 @@ function transferDetails() {
             action = 'receive'
             cls = 'is-info';
         }
-        divBody += '<strong class = "column is-one-third" > <span class = "tag ' + cls + ' is-light" >' + action + ' </span></strong >';
-        divBody += '<strong class = "column is-one-third" > ' + move.date + ' </strong> ';
-        divBody += '<strong class = "column is-one-third" > ' + move.amount + ' </strong>';
+        divBody += '<strong class = "column is-one-forth" > <span class = "tag ' + cls + ' is-light" >' + action + ' </span></strong >';
+        divBody += '<strong class = "column is-one-forth" > ' + move.date + ' </strong> ';
+        divBody += '<strong class = "column is-one-forth" > ' + move.amount + ' </strong>';
+        divBody += '<strong class = "column is-one-forth" > ' + users[move.to].name + ' </strong>';
         divBody += '</div>';
         divBody += '</div>';
     });
@@ -196,7 +158,7 @@ function transferAmount() {
         users[toid].balance += Number(amount);
         user.transfer.push({ action: 'send', date: date, amount: -Math.abs(amount), to: toid })
         users[toid].transfer.push({ action: 'receive', date: date, amount: amount, to: user.id })
-        document.getElementById('loginbalance').innerHTML = users[userid].balance
+        document.getElementById('loginbalance').innerText = users[userid].balance
         sucessShow();
     }
 }
@@ -222,13 +184,13 @@ function cloaseAccount() {
 }
 
 function errorShow() {
-    document.getElementById('errorP').innerHTML = 'Not All Detals Properly filled';
+    document.getElementById('errorP').innerText = 'Not All Detals Properly filled';
     document.getElementById('errorDiv').classList.remove('is-hidden');
 }
 
 function sucessShow() {
     document.getElementById('errorDiv').classList.remove('is-hidden');
-    document.getElementById('successP').innerHTML = 'Success';
+    document.getElementById('successP').innerText = 'Success';
     document.getElementById('successDiv').classList.toggle('is-hidden');
 }
 

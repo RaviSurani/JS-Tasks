@@ -9,6 +9,7 @@ let users = [{
     ],
     loan: [
         { action: 'loan', date: '01/01/2020', loanAmount: 1000, payed: '200', pending: '800' },
+        { action: 'loan', date: '01/01/2020', loanAmount: 5000, payed: '1000', pending: '4000' },
     ],
     transfer: [
         { action: 'send', date: '01/01/2020', amount: -100, to: '2' },
@@ -27,6 +28,7 @@ let users = [{
     ],
     loan: [
         { action: 'loan', date: '01/01/2020', loanAmount: 1000, payed: '200', pending: '800' },
+        { action: 'loan', date: '01/01/2020', loanAmount: 2000, payed: '1000', pending: '1000' },
     ],
     transfer: [
         { action: 'send', date: '01/01/2020', amount: -100, to: '2' },
