@@ -30,7 +30,7 @@
 
                     </div>
 
-                    <select id="btnSort" class="col-2" onchange="actionList(this.value)">
+                    <select id="btnaction" class="col-2" onchange="actionList(this.value)">
                         <option value="0" disabled selected>Action</option>
                         <option value="1">Select All</option>
                         <option value="2">Delete Selected</option>
@@ -47,9 +47,9 @@
                         <option value="4">Time Descending</option>
                     </select>
                     <div class="col-3">
-                        <button class="btn " id="show1" onclick="showActive(1)">All</button>
-                        <button class="btn " id="show2" onclick="showActive(2)">Active</button>
-                        <button class="btn " id="show3" onclick="showActive(3)">Completed</button>
+                        <button class="btn " id="show1" onclick="showActive()">All</button>
+                        <button class="btn " id="show2" onclick="showActive(0)">Active</button>
+                        <button class="btn " id="show3" onclick="showActive(1)">Completed</button>
                     </div>
                 </div>
 
@@ -60,10 +60,10 @@
 
 </body>
 <script>
-    let list = [];
+    let = [];
     let filter = {
         sort: 1,
-        show: 1,
+        show: 2,
     };
 
     (function() {
@@ -109,39 +109,56 @@
     function setUl(showList) {
         let html = '';
 
+        if (filter.sort == 1) {
+            // showList.sort((a, b) => (a.name > b.name) ? 1 : -1);
+            document.getElementById('btnSort').value = filter.sort;
+        } else if (filter.sort == 2) {
+            // showList.reverse((a, b) => (a.name > b.name) ? 1 : -1);
+            document.getElementById('btnSort').value = filter.sort;
+        } else if (filter.sort == 3) {
+            // showList.sort((a, b) => (a.tiem > b.time) ? 1 : -1);
+            document.getElementById('btnSort').value = filter.sort;
+        } else if (filter.sort == 4) {
+            // showList.reverse((a, b) => (a.tiem > b.time) ? 1 : -1);
+            document.getElementById('btnSort').value = filter.sort;
+        }
+        let showall = false;
+        if (filter.show == 2) {
+            showall = true;
+        }
         showList.forEach(function(item, index) {
-            html += '<tr>';
-            if (item.name == 'No Record Found.') {
-                html += `<td>No Record Found.</td>`;
-            } else {
-                html += `<td class='tdCheckbox'><input type="checkbox" class="editRecord" value="${index}" onchange="setActive(${index})" ${item.status == '0' ? 'checked' : ''}></td>
+            if (filter.show == item.status || showall) {
+                html += '<tr>';
+                if (item.name == 'No Record Found.') {
+                    html += `<td>No Record Found.</td>`;
+                } else {
+
+                    html += `<td class='tdCheckbox'><input type="checkbox" class="editRecord" value="${index}" onchange="setActive(${index})" ${item.status == '0' ? 'checked' : ''}></td>
                     <td class='hide' id=${'div' + index}>  <input type="text" id="item${index}" value='${item.name}' class='editnput'> <button onclick='update(${index})'>Edit</button></td>
                     <td class='itemName ${item.status != '1' ? 'overLine' : ''}' id='td${index}'>${item.name}</td>
                     <td class='itemName' >${item.time}</td>
-                    <td class='row d-flex flex-row-reverse margin10'>
+                    <td class='row d-flex justify-content-end margin10'>
                         <button class="btn btn-info col-2" onclick='editItem(${index})'><span class="bi bi-pen"></span></button>
                         <button class="btn btn-danger col-2" onclick='removeItem(${index})'><i class="bi bi-x-square"></i></button>
                     </td>`
+                }
+                html += '</tr> ';
             }
-            html += '</tr> ';
-        });
+        })
 
-        if (filter.show == 1) {
+        if (filter.show == 2) {
             document.getElementById('show1').classList.add('btn-primary');
             document.getElementById('show2').classList.remove('btn-primary');
             document.getElementById('show3').classList.remove('btn-primary');
-        } else if (filter.show == 2) {
+        } else if (filter.show == 0) {
             document.getElementById('show2').classList.add('btn-primary');
             document.getElementById('show1').classList.remove('btn-primary');
             document.getElementById('show3').classList.remove('btn-primary');
-        } else if (filter.show == 3) {
+        } else if (filter.show == 1) {
             document.getElementById('show3').classList.add('btn-primary');
             document.getElementById('show1').classList.remove('btn-primary');
             document.getElementById('show2').classList.remove('btn-primary');
         }
-
-
-
         document.getElementById('itemtable').innerHTML = html;
         document.getElementById('totalSpan').innerText = showList.length;
 
@@ -205,18 +222,18 @@
         hideInput();
     }
 
-    function sortList(id, sortlist = list) {
+    function sortList(id) {
         if (id == 1) {
-            sortlist.sort((a, b) => (a.name > b.name) ? 1 : -1);
+            list.sort((a, b) => (a.name > b.name) ? 1 : -1);
         } else if (id == 2) {
-            sortlist.reverse((a, b) => (a.name > b.name) ? 1 : -1);
+            list.reverse((a, b) => (a.name > b.name) ? 1 : -1);
         } else if (id == 3) {
-            sortlist.sort((a, b) => (a.tiem > b.time) ? 1 : -1);
+            list.sort((a, b) => (a.tiem > b.time) ? 1 : -1);
         } else if (id == 4) {
-            sortlist.reverse((a, b) => (a.tiem > b.time) ? 1 : -1);
+            list.reverse((a, b) => (a.tiem > b.time) ? 1 : -1);
         }
         filter.sort = id;
-        setUl(sortlist);
+        setUl(list);
     }
 
     function setActive(id) {
@@ -228,27 +245,30 @@
         updateLocalList()
     }
 
-    function showActive(id) {
-        if (id == 1) {
+    function showActive(id = 2) {
+        if (id == 2) {
+            filter.show = 2;
             updateLocalList();
-        } else if (id == 2) {
-            newList = [];
-            list.forEach(function(item) {
-                if (item.status == '1') {
-                    newList.push(item)
-                }
-            })
-            setUl(newList);
-        } else if (id == 3) {
+        } else if (id == 0) {
             newList = [];
             list.forEach(function(item) {
                 if (item.status == '0') {
                     newList.push(item)
                 }
             })
+            filter.show = id;
+            setUl(newList);
+        } else if (id == 1) {
+            newList = [];
+            list.forEach(function(item) {
+                if (item.status == '1') {
+                    newList.push(item)
+                }
+            })
+            filter.show = id;
             setUl(newList);
         }
-        filter.show = id;
+
     }
 
     function showInput(hint) {
