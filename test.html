@@ -18,29 +18,37 @@
                 <h3>Things To Do</h3>
             </div>
             <div class="card-body">
-                <input type="text" class="hide" id="maininput" oninput="search()">
+                <input type="text" class="hide" id="maininput">
                 <table id="itemtable" class="table"></table>
-                <button id="addBtn" class="hide" onclick="addnew()">Add</button>
                 <div class="row">
-                    <div class="col-3">
-                        <button class="btn btn-primary" id="addNew" onclick="showInput()"><i class="bi bi-plus-lg"></i></button>
-                        <button class="btn btn-primary" id="search" onclick="showInput()"><i class="bi bi-search"></i></button>
+                    <div class="col-2">
+                        <button class="btn btn-primary" id="addNew" onclick="showInput()"><i
+                                class="bi bi-plus-lg"></i></button>
+                        <button class="btn btn-primary" id="search" onclick="showInput()"><i
+                                class="bi bi-search"></i></button>
 
                     </div>
+
+                    <select id="btnSort" class="col-2" onchange="actionList(this.value)">
+                        <option value="0" disabled selected>Action</option>
+                        <option value="1">Select All</option>
+                        <option value="2">Delete Selected</option>
+                        <option value="3">Delete All</option>
+                    </select>
                     <div class="col-2">
                         Total Records : <span id="totalSpan"></span>
                     </div>
-                    <select id="btnSort" class="col-4" onchange="sortList(this.value)">
-                    <option value="0" disabled selected>Sort</option>
-                    <option value="1">Name A To Z</option>
-                    <option value="2">Name Z To A</option>
-                    <option value="3">Time Ascending</option>
-                    <option value="4">Time Descending</option>
-                </select>
+                    <select id="btnSort" class="col-2" onchange="sortList(this.value)">
+                        <option value="0" disabled selected>Sort</option>
+                        <option value="1">Name A To Z</option>
+                        <option value="2">Name Z To A</option>
+                        <option value="3">Time Ascending</option>
+                        <option value="4">Time Descending</option>
+                    </select>
                     <div class="col-3">
-                        <button class="btn btn-primary" id="btnAll" onclick="checkAll()">All</button>
-                        <button class="btn btn-primary" id="btnActive" onclick="active()">Active</button>
-                        <button class="btn btn-primary" d="btnComplited" onclick="inactive()">Complited</button>
+                        <button class="btn btn-primary" id="btnAll" onclick="updateLocalList()">All</button>
+                        <button class="btn btn-primary" id="btnActive" onclick="showActive()">Active</button>
+                        <button class="btn btn-primary" d="btnComplited" onclick="showInactive()">Complited</button>
                     </div>
                 </div>
 
@@ -74,7 +82,7 @@
         let html = '';
         showList.forEach(function(item, index) {
             html += `<tr>
-        <td class='tdCheckbox'><input type="checkbox" class="editRecord" value="${index}"></td>
+        <td class='tdCheckbox'><input type="checkbox" class="editRecord" value="${index}" onchange="setActive(${index})" ${item.status == 'inactive' ? 'checked' : ''}></td>
         <td class='hide' id=${'div' + index}>  <input type="text" id="item${index}" value='${item.name}' class='editnput'> <button onclick='update(${index})'>Edit</button></td>
         <td class='itemName ${item.status != 'active' ? 'overLine' : ''}' id='td${index}'>${item.name}</td>
         <td class='itemName' >${item.time}</td>
@@ -104,37 +112,63 @@
         setUl(list);
     }
 
-    function search() {
-        let inputval = document.getElementById('maininput').value;
-        let newList = [];
-        list.forEach(function(item, index) {
-            if (item.name.indexOf(inputval) != -1) {
-                newList.push({
-                    name: item.name
-                })
+    document.getElementById("maininput").addEventListener("keyup", function(event) {
+        if (event.keyCode === 13) {
+            let text = "You Want to Add this";
+            if (confirm(text) == true) {
+                text = "Yes";
+            } else {
+                text = "No";
             }
-        });
-        if (!newList.length) {
-            newList.push({
-                name: 'No Record Found.',
-                time: '',
-                status: 'active',
+            addnew()
+        } else {
+            let inputval = document.getElementById('maininput').value;
+            let newList = [];
+            list.forEach(function(item, index) {
+                if (item.name.indexOf(inputval) != -1) {
+                    newList.push({
+                        name: item.name,
+                        time: item.time,
+                        status: item.status,
+                    })
+                }
             });
-            document.getElementById('addBtn').classList.remove('hide')
+            if (!newList.length) {
+                newList.push({
+                    name: 'No Record Found.',
+                    time: '',
+                    status: 'active',
+                });
+            }
+            setUl(newList);
         }
-        setUl(newList);
-    }
+
+    });
 
     function addnew() {
-        let item = document.getElementById('maininput').value;
-        if (!list.includes(item)) {
+        let newitem = document.getElementById('maininput').value;
+        if (!list.length) {
             list.push({
                 name: item,
                 time: getCurrentDate(),
                 status: 'active',
             });
         } else {
-            alert('Allrady in List')
+            inList = false;
+            list.forEach(function(item) {
+                if (!item.name != newitem) {
+                    inList = true;
+                }
+            })
+            if (inList) {
+                list.push({
+                    name: newitem,
+                    time: getCurrentDate(),
+                    status: 'active',
+                });
+            } else {
+                alert('Allrady in List')
+            }
         }
         updateLocalList();
         setUl(list);
@@ -153,31 +187,56 @@
         setUl(list);
     }
 
-    function checkAll() {
-        check = document.querySelectorAll('input[type=checkbox]');
-        check.forEach(function(checkbox) {
-            checkbox.checked = true;
-        })
+    function setActive(id) {
+        if (list[id].status == 'active') {
+            list[id].status = 'inactive'
+        } else {
+            list[id].status = 'active'
+        }
+        updateLocalList()
     }
 
-    function active() {
-        check = document.querySelectorAll('input[type=checkbox]:checked');
-        check.forEach(function(chk) {
-            list[chk.value].status = 'active'
+    function showInactive() {
+        newList = [];
+        list.forEach(function(item) {
+            if (item.status == 'inactive') {
+                newList.push(item)
+            }
         })
-        updateLocalList();
+        setUl(newList);
     }
 
-    function inactive() {
-        check = document.querySelectorAll('input[type=checkbox]:checked');
-        check.forEach(function(chk) {
-            list[chk.value].status = 'inactive'
+    function showActive() {
+        newList = [];
+        list.forEach(function(item) {
+            if (item.status == 'active') {
+                newList.push(item)
+            }
         })
-        updateLocalList();
+        setUl(newList);
     }
 
     function showInput() {
         document.getElementById('maininput').classList.toggle('hide')
+    }
+
+    function actionList(id) {
+        if (id == 1) {
+            check = document.querySelectorAll('input[type=checkbox]');
+            check.forEach(function(checkbox) {
+                checkbox.checked = true;
+            })
+        } else if (id == 2) {
+            check = document.querySelectorAll('input[type=checkbox]:checked');
+            check.forEach(function(checkbox) {
+                list.splice(checkbox.value, 1);
+            });
+            updateLocalList();
+        } else if (id == 3) {
+            list = [];
+            updateLocalList();
+
+        }
     }
 </script>
 
