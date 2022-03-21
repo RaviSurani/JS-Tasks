@@ -5,8 +5,12 @@
     align-items: center;
 }
 
-#maininput {
-    width: 100%;
+.margin10 {
+    margin-right: 10%;
+}
+
+#maininputDiv {
+    padding: 10px;
 }
 
 table {

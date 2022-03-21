@@ -18,13 +18,14 @@
                 <h3>Things To Do</h3>
             </div>
             <div class="card-body">
-                <input type="text" class="hide" id="maininput">
+                <div class="row hide" id="maininputDiv">
+                    <input type="text" class=" col-11" id="maininput"> <button onclick="hideInput()" class="col-1 btn btn-light"><i class="bi bi-x-square"></i></button></div>
                 <table id="itemtable" class="table"></table>
                 <div class="row">
                     <div class="col-2">
-                        <button class="btn btn-primary" id="addNew" onclick="showInput()"><i
+                        <button class="btn btn-light" id="addNew" onclick="showInput('Enter Name Here.')"><i
                                 class="bi bi-plus-lg"></i></button>
-                        <button class="btn btn-primary" id="search" onclick="showInput()"><i
+                        <button class="btn btn-light" id="search" onclick="showInput('Search Here.')"><i
                                 class="bi bi-search"></i></button>
 
                     </div>
@@ -46,9 +47,9 @@
                         <option value="4">Time Descending</option>
                     </select>
                     <div class="col-3">
-                        <button class="btn btn-primary" id="btnAll" onclick="updateLocalList()">All</button>
-                        <button class="btn btn-primary" id="btnActive" onclick="showActive()">Active</button>
-                        <button class="btn btn-primary" d="btnComplited" onclick="showInactive()">Complited</button>
+                        <button class="btn " id="show1" onclick="showActive(1)">All</button>
+                        <button class="btn " id="show2" onclick="showActive(2)">Active</button>
+                        <button class="btn " id="show3" onclick="showActive(3)">Completed</button>
                     </div>
                 </div>
 
@@ -60,42 +61,24 @@
 </body>
 <script>
     let list = [];
+    let filter = {
+        sort: 1,
+        show: 1,
+    };
+
     (function() {
         if (localStorage.getItem('todoList') != null && localStorage.getItem('todoList') != '') {
             list = JSON.parse(localStorage.todoList);
         } else {
             localStorage.setItem('todoList', JSON.stringify(list))
         }
+        // sortList(filter.sort);
+        // showActive(filter.show);
         setUl(list);
     })();
 
     function getCurrentDate() {
         return new Date().toLocaleString();
-    }
-
-    function updateLocalList() {
-        localStorage.setItem('todoList', JSON.stringify(list))
-        setUl(list);
-    }
-
-    function setUl(showList) {
-        let html = '';
-        showList.forEach(function(item, index) {
-            html += '<tr>';
-            if (item.name == 'No Record Found.') {
-                html += `<td>No Record Found.</td>`;
-            } else {
-                html += `<td class='tdCheckbox'><input type="checkbox" class="editRecord" value="${index}" onchange="setActive(${index})" ${item.status == 'inactive' ? 'checked' : ''}></td>
-        <td class='hide' id=${'div' + index}>  <input type="text" id="item${index}" value='${item.name}' class='editnput'> <button onclick='update(${index})'>Edit</button></td>
-        <td class='itemName ${item.status != 'active' ? 'overLine' : ''}' id='td${index}'>${item.name}</td>
-        <td class='itemName' >${item.time}</td>
-        <td class='row width10'>
-          <button class="btn btn-info col-5" onclick='editItem(${index})'><span class="bi bi-pen"></span></button><button class="btn btn-danger col-5" onclick='removeItem(${index})'><i class="bi bi-x-square"></i></button></td>`
-            }
-            html += '</tr> ';
-        });
-        document.getElementById('itemtable').innerHTML = html;
-        document.getElementById('totalSpan').innerText = list.length;
     }
 
     function editItem(id) {
@@ -115,14 +98,57 @@
         setUl(list);
     }
 
+    function updateLocalList() {
+        localStorage.setItem('todoList', JSON.stringify(list))
+        list = JSON.parse(localStorage.todoList);
+        // sortList(filter.sort);
+        // showActive(filter.show);
+        setUl(list);
+    }
+
+    function setUl(showList) {
+        let html = '';
+
+        showList.forEach(function(item, index) {
+            html += '<tr>';
+            if (item.name == 'No Record Found.') {
+                html += `<td>No Record Found.</td>`;
+            } else {
+                html += `<td class='tdCheckbox'><input type="checkbox" class="editRecord" value="${index}" onchange="setActive(${index})" ${item.status == '0' ? 'checked' : ''}></td>
+                    <td class='hide' id=${'div' + index}>  <input type="text" id="item${index}" value='${item.name}' class='editnput'> <button onclick='update(${index})'>Edit</button></td>
+                    <td class='itemName ${item.status != '1' ? 'overLine' : ''}' id='td${index}'>${item.name}</td>
+                    <td class='itemName' >${item.time}</td>
+                    <td class='row d-flex flex-row-reverse margin10'>
+                        <button class="btn btn-info col-2" onclick='editItem(${index})'><span class="bi bi-pen"></span></button>
+                        <button class="btn btn-danger col-2" onclick='removeItem(${index})'><i class="bi bi-x-square"></i></button>
+                    </td>`
+            }
+            html += '</tr> ';
+        });
+
+        if (filter.show == 1) {
+            document.getElementById('show1').classList.add('btn-primary');
+            document.getElementById('show2').classList.remove('btn-primary');
+            document.getElementById('show3').classList.remove('btn-primary');
+        } else if (filter.show == 2) {
+            document.getElementById('show2').classList.add('btn-primary');
+            document.getElementById('show1').classList.remove('btn-primary');
+            document.getElementById('show3').classList.remove('btn-primary');
+        } else if (filter.show == 3) {
+            document.getElementById('show3').classList.add('btn-primary');
+            document.getElementById('show1').classList.remove('btn-primary');
+            document.getElementById('show2').classList.remove('btn-primary');
+        }
+
+
+
+        document.getElementById('itemtable').innerHTML = html;
+        document.getElementById('totalSpan').innerText = showList.length;
+
+    }
+
     document.getElementById("maininput").addEventListener("keyup", function(event) {
         if (event.keyCode === 13) {
-            let text = "You Want to Add this";
-            if (confirm(text) == true) {
-                text = "Yes";
-            } else {
-                text = "No";
-            }
             addnew()
         } else {
             let inputval = document.getElementById('maininput').value;
@@ -140,7 +166,7 @@
                 newList.push({
                     name: 'No Record Found.',
                     time: '',
-                    status: 'active',
+                    status: '1',
                 });
             }
             setUl(newList);
@@ -154,7 +180,7 @@
             list.push({
                 name: newitem,
                 time: getCurrentDate(),
-                status: 'active',
+                status: '1',
             });
         } else {
             inList = false;
@@ -168,60 +194,71 @@
                 list.push({
                     name: newitem,
                     time: getCurrentDate(),
-                    status: 'active',
+                    status: '1',
                 });
             } else {
                 alert('Allrady in List')
             }
         }
         updateLocalList();
-        setUl(list);
+        // setUl(list);
+        hideInput();
     }
 
-    function sortList(id) {
+    function sortList(id, sortlist = list) {
         if (id == 1) {
-            list.sort((a, b) => (a.name > b.name) ? 1 : -1);
+            sortlist.sort((a, b) => (a.name > b.name) ? 1 : -1);
         } else if (id == 2) {
-            list.reverse((a, b) => (a.name > b.name) ? 1 : -1);
+            sortlist.reverse((a, b) => (a.name > b.name) ? 1 : -1);
         } else if (id == 3) {
-            list.sort((a, b) => (a.tiem > b.time) ? 1 : -1);
+            sortlist.sort((a, b) => (a.tiem > b.time) ? 1 : -1);
         } else if (id == 4) {
-            list.reverse((a, b) => (a.tiem > b.time) ? 1 : -1);
+            sortlist.reverse((a, b) => (a.tiem > b.time) ? 1 : -1);
         }
-        setUl(list);
+        filter.sort = id;
+        setUl(sortlist);
     }
 
     function setActive(id) {
-        if (list[id].status == 'active') {
-            list[id].status = 'inactive'
+        if (list[id].status == '1') {
+            list[id].status = '0'
         } else {
-            list[id].status = 'active'
+            list[id].status = '1'
         }
         updateLocalList()
     }
 
-    function showInactive() {
-        newList = [];
-        list.forEach(function(item) {
-            if (item.status == 'inactive') {
-                newList.push(item)
-            }
-        })
-        setUl(newList);
+    function showActive(id) {
+        if (id == 1) {
+            updateLocalList();
+        } else if (id == 2) {
+            newList = [];
+            list.forEach(function(item) {
+                if (item.status == '1') {
+                    newList.push(item)
+                }
+            })
+            setUl(newList);
+        } else if (id == 3) {
+            newList = [];
+            list.forEach(function(item) {
+                if (item.status == '0') {
+                    newList.push(item)
+                }
+            })
+            setUl(newList);
+        }
+        filter.show = id;
     }
 
-    function showActive() {
-        newList = [];
-        list.forEach(function(item) {
-            if (item.status == 'active') {
-                newList.push(item)
-            }
-        })
-        setUl(newList);
+    function showInput(hint) {
+        document.getElementById('maininput').placeholder = hint
+        document.getElementById('maininputDiv').classList.remove('hide')
     }
 
-    function showInput() {
-        document.getElementById('maininput').classList.toggle('hide')
+    function hideInput() {
+        document.getElementById('maininput').value = '';
+        document.getElementById('maininputDiv').classList.add('hide')
     }
 
     function actionList(id) {
@@ -239,7 +276,6 @@
         } else if (id == 3) {
             list = [];
             updateLocalList();
-
         }
     }
 </script>
