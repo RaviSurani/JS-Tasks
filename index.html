@@ -81,15 +81,18 @@
     function setUl(showList) {
         let html = '';
         showList.forEach(function(item, index) {
-            html += `<tr>
-        <td class='tdCheckbox'><input type="checkbox" class="editRecord" value="${index}" onchange="setActive(${index})" ${item.status == 'inactive' ? 'checked' : ''}></td>
+            html += '<tr>';
+            if (item.name == 'No Record Found.') {
+                html += `<td>No Record Found.</td>`;
+            } else {
+                html += `<td class='tdCheckbox'><input type="checkbox" class="editRecord" value="${index}" onchange="setActive(${index})" ${item.status == 'inactive' ? 'checked' : ''}></td>
         <td class='hide' id=${'div' + index}>  <input type="text" id="item${index}" value='${item.name}' class='editnput'> <button onclick='update(${index})'>Edit</button></td>
         <td class='itemName ${item.status != 'active' ? 'overLine' : ''}' id='td${index}'>${item.name}</td>
         <td class='itemName' >${item.time}</td>
         <td class='row width10'>
-          <button class="btn btn-info col-5" onclick='editItem(${index})'><span class="bi bi-pen"></span></button><button class="btn btn-danger col-5" onclick='removeItem(${index})'><i class="bi bi-x-square"></i></button></td>
-        
-        </tr> `;
+          <button class="btn btn-info col-5" onclick='editItem(${index})'><span class="bi bi-pen"></span></button><button class="btn btn-danger col-5" onclick='removeItem(${index})'><i class="bi bi-x-square"></i></button></td>`
+            }
+            html += '</tr> ';
         });
         document.getElementById('itemtable').innerHTML = html;
         document.getElementById('totalSpan').innerText = list.length;
