@@ -1,4 +1,3 @@
-    document.getElementById('body').classList.remove("loos");
 let list = [];
 (function() {
     if (localStorage.getItem('todoList') != null && localStorage.getItem('todoList') != '') {

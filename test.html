@@ -12,39 +12,43 @@
 </head>
 
 <body>
-    <div id="root">
-        <div class="center">
-            <h3>Things To Do</h3>
-            <hr>
-            <input type="text" class="hide" id="maininput" oninput="search()">
-            <table id="itemtable" class="table"></table>
-            <button id="addBtn" class="hide" onclick="addnew()">Add</button>
-            <div class="row">
-                <div class="col-3">
-                    <button id="addNew" onclick="showInput()"><i class="bi bi-plus-lg"></i></button>
-                    <button id="search" onclick="showInput()"><i class="bi bi-search"></i></button>
+    <div class="center container">
+        <div class="card">
+            <div class="card-header">
+                <h3>Things To Do</h3>
+            </div>
+            <div class="card-body">
+                <input type="text" class="hide" id="maininput" oninput="search()">
+                <table id="itemtable" class="table"></table>
+                <button id="addBtn" class="hide" onclick="addnew()">Add</button>
+                <div class="row">
+                    <div class="col-3">
+                        <button class="btn btn-primary" id="addNew" onclick="showInput()"><i class="bi bi-plus-lg"></i></button>
+                        <button class="btn btn-primary" id="search" onclick="showInput()"><i class="bi bi-search"></i></button>
 
-                </div>
-                <div class="col-2">
-                    Total Records : <span id="totalSpan"></span>
-                </div>
-                <select id="btnSort" class="col-4" onchange="sortList(this.value)">
+                    </div>
+                    <div class="col-2">
+                        Total Records : <span id="totalSpan"></span>
+                    </div>
+                    <select id="btnSort" class="col-4" onchange="sortList(this.value)">
                     <option value="0" disabled selected>Sort</option>
                     <option value="1">Name A To Z</option>
                     <option value="2">Name Z To A</option>
                     <option value="3">Time Ascending</option>
                     <option value="4">Time Descending</option>
                 </select>
-                <div class="col-3">
-                    <button id="btnAll" onclick="checkAll()">All</button>
-                    <button id="btnActive" onclick="active()">Active</button>
-                    <button id="btnComplited" onclick="inactive()">Complited</button>
+                    <div class="col-3">
+                        <button class="btn btn-primary" id="btnAll" onclick="checkAll()">All</button>
+                        <button class="btn btn-primary" id="btnActive" onclick="active()">Active</button>
+                        <button class="btn btn-primary" d="btnComplited" onclick="inactive()">Complited</button>
+                    </div>
                 </div>
+
+
             </div>
-
-
         </div>
     </div>
+
 </body>
 <script>
     let list = [];
@@ -73,9 +77,9 @@
         <td class='tdCheckbox'><input type="checkbox" class="editRecord" value="${index}"></td>
         <td class='hide' id=${'div' + index}>  <input type="text" id="item${index}" value='${item.name}' class='editnput'> <button onclick='update(${index})'>Edit</button></td>
         <td class='itemName ${item.status != 'active' ? 'overLine' : ''}' id='td${index}'>${item.name}</td>
-        <td class='itemName' >${item.time}<td>
-        <td class='row'>
-          <button class="button col-5" onclick='editItem(${index})'><span class="bi bi-pen"></span></button><button class="button col-5" onclick='removeItem(${index})'><i class="bi bi-x-square"></i></button></td>
+        <td class='itemName' >${item.time}</td>
+        <td class='row width10'>
+          <button class="btn btn-info col-5" onclick='editItem(${index})'><span class="bi bi-pen"></span></button><button class="btn btn-danger col-5" onclick='removeItem(${index})'><i class="bi bi-x-square"></i></button></td>
         
         </tr> `;
         });
