@@ -43,8 +43,8 @@
                         <option value="0" disabled selected>Sort</option>
                         <option value="1">Name A To Z</option>
                         <option value="2">Name Z To A</option>
-                        <option value="3">Time Ascending</option>
-                        <option value="4">Time Descending</option>
+                        <option value="3">Date Ascending</option>
+                        <option value="4">Date Descending</option>
                     </select>
                     <div class="col-3">
                         <button class="btn " id="show1" onclick="showActive(2)">All</button>
@@ -60,7 +60,7 @@
 
 </body>
 <script>
-    let = [];
+    let list = [];
     let filter = {
         sort: 1,
         show: 2,
@@ -87,8 +87,8 @@
     }
 
     function update(id) {
-        list[id] = document.getElementById('item' + id).value;
-        localList();
+        list[id].name = document.getElementById('item' + id).value;
+        updateLocalList();
         setUl(list);
     }
 
@@ -101,8 +101,7 @@
     function updateLocalList() {
         localStorage.setItem('todoList', JSON.stringify(list))
         list = JSON.parse(localStorage.todoList);
-        // sortList(filter.sort);
-        // showActive(filter.show);
+
         setUl(list);
     }
 
@@ -113,13 +112,13 @@
             showList.sort((a, b) => (a.name > b.name) ? 1 : -1);
             document.getElementById('btnSort').value = filter.sort;
         } else if (filter.sort == 2) {
-            showList.reverse((a, b) => (a.name > b.name) ? 1 : -1);
+            showList.sort((a, b) => (a.name < b.name) ? 1 : -1);
             document.getElementById('btnSort').value = filter.sort;
         } else if (filter.sort == 3) {
             showList.sort((a, b) => (a.tiem > b.time) ? 1 : -1);
             document.getElementById('btnSort').value = filter.sort;
         } else if (filter.sort == 4) {
-            showList.reverse((a, b) => (a.tiem > b.time) ? 1 : -1);
+            showList.sort((a, b) => (a.tiem < b.time) ? 1 : -1);
             document.getElementById('btnSort').value = filter.sort;
         }
         let showall = false;
@@ -134,7 +133,7 @@
                 } else {
 
                     html += `<td class='tdCheckbox'><input type="checkbox" class="editRecord" value="${index}" onchange="setActive(${index})" ${item.status == '0' ? 'checked' : ''}></td>
-                    <td class='hide' id=${'div' + index}>  <input type="text" id="item${index}" value='${item.name}' class='editnput'> <button onclick='update(${index})'>Edit</button></td>
+                    <td class='hide' id=${'div' + index}>  <input type="text" id="item${index}" value='${item.name}' class='editnput'> <button class='btn btn-primary ' onclick='update(${index})'>Edit</button></td>
                     <td class='itemName ${item.status != '1' ? 'overLine' : ''}' id='td${index}'>${item.name}</td>
                     <td class='itemName' >${item.time}</td>
                     <td class='row d-flex justify-content-end margin10'>
@@ -200,22 +199,11 @@
                 status: '1',
             });
         } else {
-            inList = false;
-            list.forEach(function(item) {
-                if (!item.name != newitem) {
-                    inList = true;
-                }
-            })
-
-            if (inList) {
-                list.push({
-                    name: newitem,
-                    time: getCurrentDate(),
-                    status: '1',
-                });
-            } else {
-                alert('Allrady in List')
-            }
+            list.push({
+                name: newitem,
+                time: getCurrentDate(),
+                status: '1',
+            });
         }
         updateLocalList();
         // setUl(list);
